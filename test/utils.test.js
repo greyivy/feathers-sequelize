@@ -98,6 +98,11 @@ describe('Feathers Sequelize Utils', () => {
       let e = new Sequelize.HostNotFoundError();
       expect(utils.errorHandler.bind(null, e)).to.throw(errors.NotFound);
     });
+
+    it('wraps a DatabaseError as a GeneralError', () => {
+      let e = new Sequelize.DatabaseError('');
+      expect(utils.errorHandler.bind(null, e)).to.throw(errors.GeneralError);
+    });
   });
 
   describe('getOrder', () => {
@@ -111,26 +116,6 @@ describe('Feathers Sequelize Utils', () => {
       let order = utils.getOrder({ name: 1, age: -1 });
 
       expect(order).to.deep.equal([ ['name', 'ASC'], ['age', 'DESC'] ]);
-    });
-  });
-
-  describe('getWhere', () => {
-    it('returns empty object when nothing is passed in', () => {
-      let where = utils.getWhere();
-
-      expect(where).to.deep.equal({});
-    });
-
-    it('returns where conditions properly converted', () => {
-      let where = utils.getWhere({ name: 'Joe', age: { $lte: 25 } });
-
-      expect(where).to.deep.equal({ name: 'Joe', age: { $lte: 25 } });
-    });
-
-    it('converts $nin to $notIn', () => {
-      let where = utils.getWhere({ name: { $nin: ['Joe', 'Alice'] } });
-
-      expect(where).to.deep.equal({ name: { $notIn: ['Joe', 'Alice'] } });
     });
   });
 });

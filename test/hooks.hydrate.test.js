@@ -2,26 +2,7 @@ const { expect } = require('chai');
 const Sequelize = require('sequelize');
 
 const hydrate = require('../lib/hooks/hydrate');
-
-let sequelize;
-
-if (process.env.DB === 'postgres') {
-  sequelize = new Sequelize('sequelize', 'postgres', '', {
-    host: 'localhost',
-    dialect: 'postgres'
-  });
-} else if (process.env.DB === 'mysql') {
-  sequelize = new Sequelize('sequelize', 'root', '', {
-    host: '127.0.0.1',
-    dialect: 'mysql'
-  });
-} else {
-  sequelize = new Sequelize('sequelize', '', '', {
-    dialect: 'sqlite',
-    storage: './db.sqlite',
-    logging: false
-  });
-}
+const sequelize = require('./connection')();
 
 const BlogPost = sequelize.define('blogpost', {
   title: {
@@ -60,57 +41,57 @@ describe('Feathers Sequelize Hydrate Hook', () => {
     expect(hook).to.throw(Error);
   });
 
-  it('hydrates results for find()', () => {
-    return callHook(BlogPost, 'find', [{title: 'David'}]).then(hook =>
-      expect(hook.result[0] instanceof BlogPost).to.be.ok
-    );
+  it('hydrates results for find()', async () => {
+    const hook = await callHook(BlogPost, 'find', [{ title: 'David' }]);
+
+    expect(hook.result[0] instanceof BlogPost);
   });
 
-  it('hydrates results for paginated find()', () => {
-    return callHook(BlogPost, 'find', {
-      data: [{title: 'David'}]
-    }).then(hook =>
-      expect(hook.result.data[0] instanceof BlogPost).to.be.ok
-    );
+  it('hydrates results for paginated find()', async () => {
+    const hook = await callHook(BlogPost, 'find', {
+      data: [{ title: 'David' }]
+    });
+
+    expect(hook.result.data[0] instanceof BlogPost);
   });
 
-  it('hydrates results for get()', () => {
-    return callHook(BlogPost, 'get', {title: 'David'}).then(hook =>
-      expect(hook.result instanceof BlogPost).to.be.ok
-    );
+  it('hydrates results for get()', async () => {
+    const hook = await callHook(BlogPost, 'get', { title: 'David' });
+
+    expect(hook.result instanceof BlogPost);
   });
 
   ['create', 'update', 'patch'].forEach(method => {
-    it(`hydrates results for single ${method}()`, () => {
-      return callHook(BlogPost, method, {title: 'David'}).then(hook =>
-        expect(hook.result instanceof BlogPost).to.be.ok
-      );
+    it(`hydrates results for single ${method}()`, async () => {
+      const hook = await callHook(BlogPost, method, { title: 'David' });
+
+      expect(hook.result instanceof BlogPost);
     });
   });
 
   ['create', 'patch'].forEach(method => {
-    it(`hydrates results for bulk ${method}()`, () => {
-      return callHook(BlogPost, method, [{title: 'David'}]).then(hook =>
-        expect(hook.result[0] instanceof BlogPost).to.be.ok
-      );
+    it(`hydrates results for bulk ${method}()`, async () => {
+      const hook = await callHook(BlogPost, method, [{ title: 'David' }]);
+
+      expect(hook.result[0] instanceof BlogPost);
     });
   });
 
-  it('hydrates included (associated) models', () => {
-    return callHook(BlogPost, 'get', {
+  it('hydrates included (associated) models', async () => {
+    const hook = await callHook(BlogPost, 'get', {
       title: 'David',
       comments: [{ text: 'Comment text' }]
     }, {
       include: [Comment]
-    }).then(hook =>
-      expect(hook.result.comments[0] instanceof Comment).to.be.ok
-    );
+    });
+
+    expect(hook.result.comments[0] instanceof Comment);
   });
 
-  it('does not hydrate if data is a Model instance', () => {
+  it('does not hydrate if data is a Model instance', async () => {
     const instance = BlogPost.build({ title: 'David' });
-    return callHook(BlogPost, 'get', instance).then(hook =>
-      expect(hook.result).to.equal(instance)
-    );
+    const hook = await callHook(BlogPost, 'get', instance);
+
+    expect(hook.result).to.equal(instance);
   });
 });

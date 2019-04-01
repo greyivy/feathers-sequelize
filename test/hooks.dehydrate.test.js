@@ -1,26 +1,8 @@
 const { expect } = require('chai');
-const dehydrate = require('../lib/hooks/dehydrate');
 const Sequelize = require('sequelize');
 
-let sequelize;
-
-if (process.env.DB === 'postgres') {
-  sequelize = new Sequelize('sequelize', 'postgres', '', {
-    host: 'localhost',
-    dialect: 'postgres'
-  });
-} else if (process.env.DB === 'mysql') {
-  sequelize = new Sequelize('sequelize', 'root', '', {
-    host: '127.0.0.1',
-    dialect: 'mysql'
-  });
-} else {
-  sequelize = new Sequelize('sequelize', '', '', {
-    dialect: 'sqlite',
-    storage: './db.sqlite',
-    logging: false
-  });
-}
+const dehydrate = require('../lib/hooks/dehydrate');
+const sequelize = require('./connection')();
 
 const BlogPost = sequelize.define('blogpost', {
   title: {
@@ -61,61 +43,62 @@ describe('Feathers Sequelize Dehydrate Hook', () => {
     sequelize.sync()
   );
 
-  it('serializes results for find()', () => {
-    return callHook(BlogPost, 'find', [{title: 'David'}]).then(hook =>
-      expect(Object.getPrototypeOf(hook.result[0])).to.equal(Object.prototype)
-    );
+  it('serializes results for find()', async () => {
+    const hook = await callHook(BlogPost, 'find', [{ title: 'David' }]);
+
+    expect(Object.getPrototypeOf(hook.result[0])).to.equal(Object.prototype);
   });
 
-  it('serializes results for paginated find()', () => {
-    return callHook(BlogPost, 'find', {
-      data: [{title: 'David'}]
-    }).then(hook =>
-      expect(Object.getPrototypeOf(hook.result.data[0])).to.equal(Object.prototype)
-    );
+  it('serializes results for paginated find()', async () => {
+    const hook = await callHook(BlogPost, 'find', {
+      data: [{ title: 'David' }]
+    });
+
+    expect(Object.getPrototypeOf(hook.result.data[0])).to.equal(Object.prototype);
   });
 
-  it('serializes results for get()', () => {
-    return callHook(BlogPost, 'get', {title: 'David'}).then(hook =>
-      expect(Object.getPrototypeOf(hook.result)).to.equal(Object.prototype)
-    );
+  it('serializes results for get()', async () => {
+    const hook = await callHook(BlogPost, 'get', { title: 'David' });
+
+    expect(Object.getPrototypeOf(hook.result)).to.equal(Object.prototype);
   });
 
   ['create', 'update', 'patch'].forEach(method => {
-    it(`serializes results for single ${method}()`, () => {
-      return callHook(BlogPost, method, {title: 'David'}).then(hook =>
-        expect(Object.getPrototypeOf(hook.result)).to.equal(Object.prototype)
-      );
+    it(`serializes results for single ${method}()`, async () => {
+      const hook = await callHook(BlogPost, method, { title: 'David' });
+
+      expect(Object.getPrototypeOf(hook.result)).to.equal(Object.prototype);
     });
   });
 
   ['create', 'patch'].forEach(method => {
-    it(`serializes results for bulk ${method}()`, () => {
-      return callHook(BlogPost, method, [{title: 'David'}]).then(hook =>
-        expect(Object.getPrototypeOf(hook.result[0])).to.equal(Object.prototype)
-      );
+    it(`serializes results for bulk ${method}()`, async () => {
+      const hook = await callHook(BlogPost, method, [{ title: 'David' }]);
+
+      expect(Object.getPrototypeOf(hook.result[0])).to.equal(Object.prototype);
     });
   });
 
-  it('serializes included (associated) models', () => {
-    return callHook(BlogPost, 'get', {
+  it('serializes included (associated) models', async () => {
+    const hook = await callHook(BlogPost, 'get', {
       title: 'David',
       comments: [{ text: 'Comment text' }]
     }, {
       include: [Comment]
-    }).then(hook =>
-      expect(Object.getPrototypeOf(hook.result.comments[0])).to.equal(Object.prototype)
-    );
+    });
+
+    expect(Object.getPrototypeOf(hook.result.comments[0])).to.equal(Object.prototype);
   });
 
-  it('does not serialize if data is not a Model instance (with a toJSON method)', () => {
+  it('does not serialize if data is not a Model instance (with a toJSON method)', async () => {
     const result = { title: 'David' };
-    return dehydrate().call({ Model: BlogPost }, {
+
+    const hook = await dehydrate().call({ Model: BlogPost }, {
       type: 'after',
       method: 'get',
       result
-    }).then(hook =>
-      expect(hook.result).to.equal(result)
-    );
+    });
+
+    expect(hook.result).to.equal(result);
   });
 });

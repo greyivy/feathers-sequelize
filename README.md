@@ -18,7 +18,7 @@ And [one of the following](http://docs.sequelizejs.com/en/latest/docs/getting-st
 
 ```bash
 npm install --save pg pg-hstore
-npm install --save mysql // For both mysql and mariadb dialects
+npm install --save mysql2 // For both mysql and mariadb dialects
 npm install --save sqlite3
 npm install --save tedious // MSSQL
 ```
@@ -43,10 +43,14 @@ app.use('/messages', service({ Model, id, events, paginate }));
 __Options:__
 
 - `Model` (**required**) - The Sequelize model definition
-- `id` (*optional*, default: `'id'`) - The name of the id field property.
+- `id` (*optional*, default: primary key of the model) - The name of the id field property. Will use the first property with `primaryKey: true` by default.
 - `raw` (*optional*, default: `true`) - Runs queries faster by returning plain objects instead of Sequelize models.
+- `Sequelize` (*optional*, default: `Model.sequelize.Sequelize`) - The Sequelize instance
 - `events` (*optional*) - A list of [custom service events](https://docs.feathersjs.com/api/events.html#custom-events) sent by this service
 - `paginate` (*optional*) - A [pagination object](https://docs.feathersjs.com/api/databases/common.html#pagination) containing a `default` and `max` page size
+- `multi` (*optional*) - Allow `create` with arrays and `update` and `remove` with `id` `null` to change multiple items. Can be `true` for all methods or an array of allowed methods (e.g. `[ 'remove', 'create' ]`)
+- `operators` (*optional*) - A mapping from query syntax property names to to [Sequelize secure operators](http://docs.sequelizejs.com/manual/tutorial/querying.html)
+- `whitelist` (*optional*) - A list of additional query parameters to allow (e..g `[ '$regex', '$geoNear' ]`). Default is the supported `operators`
 
 ### params.sequelize
 
@@ -58,24 +62,48 @@ app.service('messages').hooks({
     find(context) {
       // Get the Sequelize instance. In the generated application via:
       const sequelize = context.app.get('sequelizeClient');
-      
+      const { User } = sequelize.models;
+
       context.params.sequelize = {
         include: [ User ]
       }
+
+      return context;
     }
   }
 });
 ```
 
+### operators
+
+Sequelize deprecated string based operators a while ago for security reasons. Starting at version 4.0.0 `feathers-sequelize` converts queries securely. If you want to support additional Sequelize operators, the `operators` service option can contain a mapping from query parameter name to Sequelize operator. By default supported are:
+
+```
+'$eq',
+'$ne',
+'$gte',
+'$gt',
+'$lte',
+'$lt',
+'$in',
+'$nin',
+'$like',
+'$notLike',
+'$iLike',
+'$notILike',
+'$or',
+'$and'
+```
+
 ## Sequelize `raw` queries
 
-By default, all `feathers-sequelize` operations will return `raw` data (using `raw: true` when querying the database). This results in faster execution and allows feathers-sequelize to interoperate with feathers-common hooks and other 3rd party integrations. However, this will bypass some of the "goodness" you get when using Sequelize as an ORM: 
+By default, all `feathers-sequelize` operations will return `raw` data (using `raw: true` when querying the database). This results in faster execution and allows feathers-sequelize to interoperate with feathers-common hooks and other 3rd party integrations. However, this will bypass some of the "goodness" you get when using Sequelize as an ORM:
 
  - custom getters/setters will be bypassed
  - model-level validations are bypassed
  - associated data loads a bit differently
  - ...and several other issues that one might not expect
- 
+
 Don't worry! The solution is easy. Please read the guides about [working with model instances](#working-with-sequelize-model-instances).
 
 ## Example
@@ -212,7 +240,7 @@ It is highly recommended to use `raw` queries, which is the default. However, th
     ```js
     const hydrate = require('feathers-sequelize/hooks/hydrate');
     hooks.after.find = [hydrate()];
-    
+
     // Or, if you need to include associated models, you can do the following:
      function includeAssociated (context) {
          return hydrate({
@@ -229,10 +257,10 @@ It is highly recommended to use `raw` queries, which is the default. However, th
 > const hydrate = require('feathers-sequelize/hooks/hydrate');
 > const dehydrate = require('feathers-sequelize/hooks/dehydrate');
 > const { populate } = require('feathers-hooks-common');
-> 
+>
 > hooks.after.find = [hydrate(), doSomethingCustom(), dehydrate(), populate()];
 > ```
-    
+
 ## Validation
 
 Sequelize by default gives you the ability to [add validations at the model level](http://docs.sequelizejs.com/en/latest/docs/models-definition/#validations). Using an error handler like the one that [comes with Feathers](https://github.com/feathersjs/feathers-errors/blob/master/src/error-handler.js) your validation errors will be formatted nicely right out of the box!
@@ -275,7 +303,7 @@ Once your have your custom query working to your satisfaction, you will want to 
 ```js
 function buildCustomQuery(context) {
 	context.params.sequelize = {
-       /* 
+       /*
         * This is the same object you passed to "findAll" above.
         * This object is *shallow merged* onto the underlying query object
         * generated by feathers-sequelize (it is *not* a deep merge!).
@@ -315,17 +343,17 @@ npm install sequelize-cli --save -g
 const path = require('path');
 
 module.exports = {
-  'config': path.resolve('migrations/config/config.js'),
-  'migrations-path': path.resolve('migrations'),
+  'config': path.resolve('migrations/config.js'),
+  'migrations-path': path.resolve('migrations/scripts'),
   'seeders-path': path.resolve('migrations/seeders'),
-  'models-path': path.resolve('migrations/models')
+  'models-path': path.resolve('migrations/models.js')
 };
 ```
 
-- Create the migrations config in `migrations/config/config.js`:
+- Create the migrations config in `migrations/config.js`:
 
 ```js
-const app = require('../../src/app');
+const app = require('../src/app');
 const env = process.env.NODE_ENV || 'development';
 const dialect = 'mysql'|'sqlite'|'postgres'|'mssql';
 
@@ -338,11 +366,11 @@ module.exports = {
 };
 ```
 
-- Define your models config in `migrations/models/index.js`:
+- Define your models config in `migrations/models.js`:
 
 ```js
 const Sequelize = require('sequelize');
-const app = require('../../src/app');
+const app = require('../src/app');
 const sequelize = app.get('sequelizeClient');
 const models = sequelize.models;
 
@@ -356,7 +384,7 @@ module.exports = Object.assign({
 
 ### Migrations workflow
 
-The migration commands will load your application and it is therefore required that you define the same environment variables as when running you application. For example, many applications will define the database connection string in the startup command:
+The migration commands will load your application and it is therefore required that you define the same environment variables as when running your application. For example, many applications will define the database connection string in the startup command:
 
 ```
 DATABASE_URL=postgres://user:pass@host:port/dbname npm start
@@ -377,9 +405,9 @@ To create a new migration file, run the following command and provide a meaningf
 sequelize migration:create --name="meaningful-name"
 ```
 
-This will create a new file in the migrations folder. All migration file names will be prefixed with a sortable data/time string: `20160421135254-meaninful-name.js`. This prefix is crucial for making sure your migrations are executed in the proper order.
+This will create a new file in the `migrations/scripts` folder. All migration file names will be prefixed with a sortable data/time string: `20160421135254-meaningful-name.js`. This prefix is crucial for making sure your migrations are executed in the proper order.
 
-> **NOTE:** The order of your migrations is determined by the alphabetical order of the migration scripts in the file system. The file names generated by the CLI tools will always ensure that the most recent migration comes last. 
+> **NOTE:** The order of your migrations is determined by the alphabetical order of the migration scripts in the file system. The file names generated by the CLI tools will always ensure that the most recent migration comes last.
 
 #### Add the up/down scripts:
 
@@ -406,7 +434,7 @@ module.exports = {
 ```
 
 > **ProTip:** As of this writing, if you use the `changeColumn` method you must **always** specify the `type`, even if the type is not changing.
- 
+
 > **ProTip:** Down scripts are typically easy to create and should be nearly identical to the up script except with inverted logic and inverse method calls.
 
 #### Keeping your app code in sync with migrations
@@ -443,7 +471,7 @@ module.exports = {
 The CLI tools will always run your migrations in the correct order and will keep track of which migrations have been applied and which have not. This data is stored in the database under the `_migrations` table. To ensure you are up to date, simply run the following:
 
 ```
-sequelize db:migrate 
+sequelize db:migrate
 ```
 
 > **ProTip:** You can add the migrations script to your application startup command to ensure that all migrations have run every time your app is started. Try updating your package.json `scripts` attribute and run `npm start`:
@@ -459,7 +487,7 @@ scripts: {
 To undo the last migration, run the following command:
 
 ```
-sequelize db:migrate:undo 
+sequelize db:migrate:undo
 ```
 
 Continue running the command to undo each migration one at a time - the migrations will be undone in the proper order.
@@ -474,11 +502,37 @@ In the unfortunate case where you must revert your app to a previous state, it i
 1. Find the last stable version of your app
 1. Count the number of migrations which have been added since that version
 1. Undo your migrations one at a time until the db is in the correct state
-1. Revert your code back to the previous state 
+1. Revert your code back to the previous state
 1. Start your app
+
+### Migrating
+
+`feathers-sequelize` 4.0.0 comes with important security and usability updates.
+
+> __Important:__ For general migration information to the new database adapter functionality see [crow.docs.feathersjs.com/migrating.html#database-adapters](https://crow.docs.feathersjs.com/migrating.html#database-adapters).
+
+The following breaking changes have been introduced:
+
+- All methods now take `params.sequelize` into account
+- All methods allow additional query parameters
+- Multiple updates are disabled by default (see the `multi` option)
+- Upgraded to secure Sequelize operators (see the [operators](#operators) option)
+- Errors no longer contain Sequelize specific information. The original Sequelize error can be retrieved on the server via:
+
+```js
+const { ERROR } = require('feathers-sequelize');
+
+try {
+  await sequelizeService.doSomethign();
+} catch(error) {
+  // error is a FeathersError
+  // Safely retrieve the Sequelize error
+  const sequelizeError = error[ERROR];
+}
+```
 
 ## License
 
-Copyright (c) 2017
+Copyright (c) 2019
 
 Licensed under the [MIT license](LICENSE).

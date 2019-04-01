@@ -1,5 +1,161 @@
 # Change Log
 
+## [Unreleased](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/HEAD)
+
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v5.0.0...HEAD)
+
+**Closed issues:**
+
+- Sequelize V5 [\#283](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/283)
+
+## [v5.0.0](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v5.0.0) (2019-03-30)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.1.1...v5.0.0)
+
+**Merged pull requests:**
+
+- Update tests to verify that id of bulk create is not null [\#282](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/282) ([daffl](https://github.com/daffl))
+- Update sequelize to the latest version 🚀 [\#281](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/281) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Wraps a SequelizeDatabaseError as a GeneralError [\#275](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/275) ([honzahommer](https://github.com/honzahommer))
+
+## [v4.1.1](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.1.1) (2019-02-27)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.1.0...v4.1.1)
+
+**Closed issues:**
+
+- Multi Patch fails when used with default pagination [\#279](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/279)
+- Question: Multiple database connection [\#278](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/278)
+
+**Merged pull requests:**
+
+- Fix issue with patch when using pagination by default [\#280](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/280) ([nicholasnelson](https://github.com/nicholasnelson))
+- Update mocha to the latest version 🚀 [\#276](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/276) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+
+## [v4.1.0](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.1.0) (2019-01-25)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.0.8...v4.1.0)
+
+**Closed issues:**
+
+- Sorted and limited query does not respect the sort first [\#272](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/272)
+
+**Merged pull requests:**
+
+- Determine primary key name [\#273](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/273) ([edwardsmarkf](https://github.com/edwardsmarkf))
+- Tighten up some options.Model/Sequelize/getModel related code. [\#267](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/267) ([AndrewJDR](https://github.com/AndrewJDR))
+
+## [v4.0.8](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.0.8) (2019-01-10)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.0.7...v4.0.8)
+
+**Merged pull requests:**
+
+- Make sure that queries with id property work properly [\#271](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/271) ([daffl](https://github.com/daffl))
+- Update @feathersjs/adapter-commons to the latest version 🚀 [\#270](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/270) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+
+## [v4.0.7](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.0.7) (2018-12-29)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.0.6...v4.0.7)
+
+**Merged pull requests:**
+
+- Add default params to hook-less methods [\#268](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/268) ([daffl](https://github.com/daffl))
+
+## [v4.0.6](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.0.6) (2018-12-27)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.0.5...v4.0.6)
+
+**Merged pull requests:**
+
+- Use Sequelize directly to access Op [\#266](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/266) ([honzahommer](https://github.com/honzahommer))
+
+## [v4.0.5](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.0.5) (2018-12-26)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.0.4...v4.0.5)
+
+**Merged pull requests:**
+
+- Added getModel override param passing tests and fixes [\#265](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/265) ([AndrewJDR](https://github.com/AndrewJDR))
+
+## [v4.0.4](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.0.4) (2018-12-22)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.0.3...v4.0.4)
+
+**Merged pull requests:**
+
+- Only filter plain objects in query [\#264](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/264) ([daffl](https://github.com/daffl))
+
+## [v4.0.3](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.0.3) (2018-12-21)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.0.2...v4.0.3)
+
+**Closed issues:**
+
+- getModel\(\) overriding with parameters broken in 4.0.x [\#261](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/261)
+
+**Merged pull requests:**
+
+- Fix recursive getModel call when using this.Model [\#263](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/263) ([daffl](https://github.com/daffl))
+
+## [v4.0.2](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.0.2) (2018-12-21)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.0.1...v4.0.2)
+
+**Merged pull requests:**
+
+- Make sure that Symbols are included in filtered query [\#260](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/260) ([daffl](https://github.com/daffl))
+
+## [v4.0.1](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.0.1) (2018-12-21)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.0.0...v4.0.1)
+
+**Merged pull requests:**
+
+- Add service.Model back [\#259](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/259) ([daffl](https://github.com/daffl))
+- Convert all Sequelize errors into a safe FeathersError [\#258](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/258) ([daffl](https://github.com/daffl))
+
+## [v4.0.0](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v4.0.0) (2018-12-20)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v3.1.3...v4.0.0)
+
+**Implemented enhancements:**
+
+- Use Sequelize Symbol based operators for better security [\#244](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/244)
+
+**Fixed bugs:**
+
+- Ensure `params` are always passed through to all service calls [\#234](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/234)
+- Remove error details in production [\#231](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/231)
+
+**Closed issues:**
+
+- Include as array, no longer working [\#239](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/239)
+- feathers-sequelize with hook update only selected columns. [\#238](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/238)
+
+**Merged pull requests:**
+
+- Securely hide original Sequelize error [\#257](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/257) ([daffl](https://github.com/daffl))
+- Upgrade to @feathersjs/adapter-commons and latest common service features [\#256](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/256) ([daffl](https://github.com/daffl))
+- Update dependencies [\#255](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/255) ([daffl](https://github.com/daffl))
+- Migrate tests to async/await [\#254](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/254) ([daffl](https://github.com/daffl))
+- De-duplicate connection setup [\#253](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/253) ([daffl](https://github.com/daffl))
+- Fixed issue where params are ignored on update service calls. [\#252](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/252) ([AndrewJDR](https://github.com/AndrewJDR))
+
+## [v3.1.3](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v3.1.3) (2018-10-29)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v3.1.2...v3.1.3)
+
+**Closed issues:**
+
+- Include hook doesn't work on create [\#242](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/242)
+- Warning messages when using "sequelize db:migrate" [\#240](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/240)
+- Extending service class fails when transpiling to ES5 [\#237](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/237)
+- Example in readme.md doesn't work [\#236](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/236)
+- How to use raw where clause [\#233](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/233)
+- Associations on Create [\#230](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/230)
+- Valid password characters can break the connection string [\#229](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/229)
+- Does Feathers-Sequalize support class and instance methods? [\#225](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/225)
+- Find & include data structure shape [\#224](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/224)
+- Fix bug Pg-Native [\#222](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/222)
+- Connection pool [\#221](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/221)
+- Question: Feathers Sequelize raw query and feathers service without using model. [\#215](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/215)
+- Sub include relations with Sequelize: Query erro [\#203](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/203)
+
+**Merged pull requests:**
+
+- use transactions in `update`, related to \#188 [\#243](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/243) ([jiangts](https://github.com/jiangts))
+- Update README to fix \#240 [\#241](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/241) ([leedongwei](https://github.com/leedongwei))
+- minor typos [\#232](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/232) ([Strongbyte-ES](https://github.com/Strongbyte-ES))
+- Update README: Latest version requires mysql2 [\#219](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/219) ([ricardopolo](https://github.com/ricardopolo))
+
 ## [v3.1.2](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v3.1.2) (2018-06-07)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v3.1.1...v3.1.2)
 

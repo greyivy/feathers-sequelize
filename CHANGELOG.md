@@ -1,12 +1,121 @@
 # Change Log
 
-## [Unreleased](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/HEAD)
+## [v6.1.0](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v6.1.0) (2019-10-07)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v6.0.2...v6.1.0)
 
-[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v5.0.0...HEAD)
+**Merged pull requests:**
+
+- Update all dependencies [\#324](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/324) ([daffl](https://github.com/daffl))
+
+## [v6.0.2](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v6.0.2) (2019-09-29)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v6.0.1...v6.0.2)
+
+**Closed issues:**
+
+- FeathersJS Inserts 2 records into MySql from 1 REST call [\#321](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/321)
+- An in-range update of @feathersjs/express is breaking the build 🚨 [\#318](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/318)
+- Many to many relation result duplicate objects [\#317](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/317)
+- An in-range update of dtslint is breaking the build 🚨 [\#315](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/315)
+- Patch/Remove methods mess up Find method [\#313](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/313)
+- Warning When Starting Feathers when using Sequelize 5.10.0 with feathers-sequelize 5.1.3 [\#305](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/305)
+
+**Merged pull requests:**
+
+- Pass entity type to AdapterService\<T\> and update dependencies [\#322](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/322) ([daffl](https://github.com/daffl))
+- Update README.md [\#320](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/320) ([jvidalgz](https://github.com/jvidalgz))
+- Update dependencies and lint files [\#319](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/319) ([daffl](https://github.com/daffl))
+- Update semistandard to the latest version 🚀 [\#316](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/316) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Docs: improve instruction for setting the 'dialect' variable [\#309](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/309) ([bravo-kernel](https://github.com/bravo-kernel))
+
+## [v6.0.1](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v6.0.1) (2019-07-22)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v6.0.0...v6.0.1)
+
+**Closed issues:**
+
+- UPDATE forces raw false [\#311](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/311)
+- After hook in service not running when same endpoint called in quick succession [\#308](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/308)
+- upgrade sequelize to avoid SQL injection vuln [\#306](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/306)
+
+**Merged pull requests:**
+
+- Use correct raw setting on update [\#312](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/312) ([daffl](https://github.com/daffl))
+- Update dtslint to the latest version 🚀 [\#307](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/307) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+
+## [v6.0.0](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v6.0.0) (2019-07-06)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v5.1.3...v6.0.0)
+
+**Closed issues:**
+
+- How to use Sequelize increment method with this adapter [\#303](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/303)
+- An in-range update of pg is breaking the build 🚨 [\#301](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/301)
+- Feather-sequelize $or operator not working [\#299](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/299)
+- An in-range update of sqlite3 is breaking the build 🚨 [\#298](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/298)
+- An in-range update of body-parser is breaking the build 🚨 [\#296](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/296)
+- An in-range update of sequelize is breaking the build 🚨 [\#295](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/295)
+- options.whitelist overwrites merged operators and whitelist  [\#292](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/292)
+- Underscored foreignKeys failing when upgrading to v5 [\#287](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/287)
+
+**Merged pull requests:**
+
+- Add TypeScript definitions and upgrade tests to Feathers 4 [\#304](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/304) ([daffl](https://github.com/daffl))
+- Lock CI to Node 11 for now [\#302](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/302) ([daffl](https://github.com/daffl))
+
+## [v5.1.3](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v5.1.3) (2019-04-18)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v5.1.2...v5.1.3)
+
+**Closed issues:**
+
+- $iLike operator declared incorrectly in default operators [\#290](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/290)
+
+**Merged pull requests:**
+
+- Solve whitelist merge problem [\#293](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/293) ([DaddyWarbucks](https://github.com/DaddyWarbucks))
+
+## [v5.1.2](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v5.1.2) (2019-04-17)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v5.1.1...v5.1.2)
+
+**Implemented enhancements:**
+
+- Unflatten results of raw queries [\#149](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/149)
+
+**Closed issues:**
+
+- How to return man-to-many relationship? [\#288](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/288)
+
+**Merged pull requests:**
+
+- Fix iLike typo [\#291](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/291) ([DaddyWarbucks](https://github.com/DaddyWarbucks))
+
+## [v5.1.1](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v5.1.1) (2019-04-09)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v5.1.0...v5.1.1)
+
+**Closed issues:**
+
+- belongsToMany Association [\#285](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/285)
+
+**Merged pull requests:**
+
+- Add returning: true for bulk creates [\#286](https://github.com/feathersjs-ecosystem/feathers-sequelize/pull/286) ([daffl](https://github.com/daffl))
+
+## [v5.1.0](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v5.1.0) (2019-04-05)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v5.0.1...v5.1.0)
+
+**Closed issues:**
+
+- include association's association [\#284](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/284)
+
+## [v5.0.1](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v5.0.1) (2019-03-30)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v5.0.0...v5.0.1)
+
+**Implemented enhancements:**
+
+- Is there a way to createQuery? [\#228](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/228)
+- count is slow on large data sets [\#178](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/178)
 
 **Closed issues:**
 
 - Sequelize V5 [\#283](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/283)
+- Incorrect Error Type [\#269](https://github.com/feathersjs-ecosystem/feathers-sequelize/issues/269)
 
 ## [v5.0.0](https://github.com/feathersjs-ecosystem/feathers-sequelize/tree/v5.0.0) (2019-03-30)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-sequelize/compare/v4.1.1...v5.0.0)

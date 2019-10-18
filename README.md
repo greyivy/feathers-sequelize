@@ -8,7 +8,7 @@
 
 A [Feathers](https://feathersjs.com) database adapter for [Sequelize](http://sequelizejs.com), an ORM for Node.js. It supports PostgreSQL, MySQL, MariaDB, SQLite and MSSQL and features transaction support, relations, read replication and more.
 
-> __Very Important:__ Before using this adapter you have to be familiar with both, the [Feathers Basics](https://docs.feathersjs.com/guides/basics/readme.html) and general use of [Sequelize](http://docs.sequelizejs.com/). For associations and relations see the [associations](#associations) section. This adapter may not cover all use cases but they can still be implemented using Sequelize models directly in a [Custom Feathers service](https://docs.feathersjs.com/guides/basics/services.html).
+> __Very Important:__ Before using this adapter you have to be familiar with both, the [Feathers Basics](https://docs.feathersjs.com/guides/basics/setup.html) and general use of [Sequelize](http://docs.sequelizejs.com/). For associations and relations see the [associations](#associations) section. This adapter may not cover all use cases but they can still be implemented using Sequelize models directly in a [Custom Feathers service](https://docs.feathersjs.com/guides/basics/services.html).
 
 ```bash
 npm install --save feathers-sequelize
@@ -192,17 +192,18 @@ Once you understand how the `include` option works with Sequelize, you will want
 ```js
 // GET /my-service?name=John&include=1
 function (context) {
-   if (context.params.query.include) {
+  const { include, ...query };
+
+   if (include) {
       const AssociatedModel = context.app.services.fooservice.Model;
       context.params.sequelize = {
          include: [{ model: AssociatedModel }]
       };
-      // delete any special query params so they are not used
-      // in the WHERE clause in the db query.
-      delete context.params.query.include;
+      // Update the query to not include `include`
+      context.params.query = query;
    }
 
-   return Promise.resolve(context);
+   return context;
 }
 ```
 
@@ -355,7 +356,7 @@ module.exports = {
 ```js
 const app = require('../src/app');
 const env = process.env.NODE_ENV || 'development';
-const dialect = 'mysql'|'sqlite'|'postgres'|'mssql';
+const dialect = 'postgres'; // Or your dialect name
 
 module.exports = {
   [env]: {

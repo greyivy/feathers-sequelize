@@ -175,17 +175,21 @@ describe('Feathers Sequelize Service', () => {
     it('throws an error when missing a Model', () => {
       expect(service.bind(null, { name: 'Test' })).to.throw(/You must provide a Sequelize Model/);
     });
+
+    it('re-exports hooks', () => {
+      assert.ok(service.hooks);
+    });
   });
 
   describe('Common Tests', () => {
     const app = feathers()
       .use('/people', service({
         Model,
-        events: [ 'testing' ]
+        events: ['testing']
       }))
       .use('/people-customid', service({
         Model: CustomId,
-        events: [ 'testing' ]
+        events: ['testing']
       }));
 
     it('has .Model', () => {
@@ -203,7 +207,7 @@ describe('Feathers Sequelize Service', () => {
         paginate: {
           default: 10
         },
-        events: [ 'testing' ],
+        events: ['testing'],
         multi: true
       }))
       .use('/orders', service({
@@ -212,7 +216,7 @@ describe('Feathers Sequelize Service', () => {
       }))
       .use('/custom-getter-setter', service({
         Model: CustomGetterSetter,
-        events: [ 'testing' ],
+        events: ['testing'],
         multi: true
       }));
 
@@ -249,7 +253,8 @@ describe('Feathers Sequelize Service', () => {
       it('still allows querying with Sequelize operators', async () => {
         const name = 'Age test';
         const person = await people.create({ name, age: 10 });
-        const { data } = await people.find({ query:
+        const { data } = await people.find({
+          query:
           { age: { [Sequelize.Op.eq]: 10 } }
         });
 
@@ -263,7 +268,8 @@ describe('Feathers Sequelize Service', () => {
       it('$like works', async () => {
         const name = 'Like test';
         const person = await people.create({ name, age: 10 });
-        const { data } = await people.find({ query:
+        const { data } = await people.find({
+          query:
           { name: { $like: '%ike%' } }
         });
 
@@ -405,6 +411,77 @@ describe('Feathers Sequelize Service', () => {
       });
     });
 
+    describe('Operators and Whitelist', () => {
+      it('merges whitelist and default operators', async () => {
+        const app = feathers();
+        const whitelist = ['$something'];
+        app.use('/ops-and-whitelist', service({
+          Model,
+          whitelist
+        }));
+        const ops = app.service('ops-and-whitelist');
+        const newWhitelist = Object
+          .keys(ops.options.operators)
+          .concat(whitelist);
+        expect(newWhitelist).to.deep.equal(ops.options.whitelist);
+      });
+
+      it('fails using operator that IS NOT whitelisted OR default', async () => {
+        const app = feathers();
+        app.use('/ops-and-whitelist', service({
+          Model
+        }));
+        const ops = app.service('ops-and-whitelist');
+        try {
+          await ops.find({ query: { name: { $notWhitelisted: 'Beau' } } });
+          assert.ok(false, 'Should never get here');
+        } catch (error) {
+          assert.strictEqual(error.name, 'BadRequest');
+          assert.strictEqual(error.message, 'Invalid query parameter $notWhitelisted');
+        }
+      });
+
+      it('succeeds using operator that IS whitelisted OR default', async () => {
+        const app = feathers();
+        app.use('/ops-and-whitelist', service({
+          Model,
+          whitelist: ['$between'],
+          operators: { $between: Sequelize.Op.between }
+        }));
+        const ops = app.service('ops-and-whitelist');
+        const result1 = await ops.find({ query: { name: { $like: 'Beau' } } });
+        const result2 = await ops.find({ query: { name: { $between: 'Beau' } } });
+        assert.strictEqual(result1.length, 0);
+        assert.strictEqual(result2.length, 0);
+      });
+
+      it('succeeds using operator that IS whitelisted AND default', async () => {
+        const app = feathers();
+        app.use('/ops-and-whitelist', service({
+          Model,
+          whitelist: ['$like']
+        }));
+        const ops = app.service('ops-and-whitelist');
+        const result = await ops.find({ query: { name: { $like: 'Beau' } } });
+        assert.strictEqual(result.length, 0);
+      });
+
+      it('fails using an invalid operator in the whitelist', async () => {
+        const app = feathers();
+        app.use('/ops-and-whitelist', service({
+          Model,
+          whitelist: ['$invalidOp']
+        }));
+        const ops = app.service('ops-and-whitelist');
+        try {
+          await ops.find({ query: { name: { $invalidOp: 'Beau' } } });
+          assert.ok(false, 'Should never get here');
+        } catch (error) {
+          assert.strictEqual(error.message, "Invalid value { '$invalidOp': 'Beau' }");
+        }
+      });
+    });
+
     it('can set the scope of an operation#130', async () => {
       const people = app.service('people');
       const data = { name: 'Active', status: 'active' };
@@ -426,7 +503,7 @@ describe('Feathers Sequelize Service', () => {
     const app = feathers();
     app.use('/raw-people', service({
       Model,
-      events: [ 'testing' ],
+      events: ['testing'],
       multi: true
     }));
     const rawPeople = app.service('raw-people');
@@ -434,7 +511,7 @@ describe('Feathers Sequelize Service', () => {
     describe('Non-raw Service Config', () => {
       app.use('/people', service({
         Model,
-        events: [ 'testing' ],
+        events: ['testing'],
         multi: true,
         raw: false // -> this is what we are testing
       }));
@@ -623,7 +700,7 @@ describe('Feathers Sequelize Service', () => {
     const app = feathers();
     app.use('/raw-people', extendedService({
       Model,
-      events: [ 'testing' ],
+      events: ['testing'],
       multi: true
     }));
     const rawPeople = app.service('raw-people');
@@ -631,7 +708,7 @@ describe('Feathers Sequelize Service', () => {
     describe('Non-raw Service Config', () => {
       app.use('/people', extendedService({
         Model,
-        events: [ 'testing' ],
+        events: ['testing'],
         multi: true,
         raw: false // -> this is what we are testing
       }));
